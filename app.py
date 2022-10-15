@@ -20,25 +20,54 @@ reddit = praw.Reddit(client_id=myClientIDvar,
                      client_secret=myClientSecret, user_agent=myRedditUserName)
 
 # Get Sample Dataframe of top 5 Posts' information
-dfHeadings = {'Unique': [], 'Sub': [], 'Title': [], 'URL': [],
-              'Time': [], 'Author': [], 'Body': [], 'IsSelfPost': []}
+dfHeadings = {
+    'Unique': [],
+    'Sub': [],
+    'Title': [],
+    'URL': [],
+    'Time': [],
+    'Author': [],
+    'Body': [],
+    'IsSelfPost': []
+}
+
 dfPosts = pd.DataFrame(dfHeadings)
 dfPosts['IsSelfPost'] = dfPosts['IsSelfPost'].astype('bool')
 subredditName = 'christianity'
+
 for indexPosts, submission in enumerate(reddit.subreddit(subredditName).hot(limit=5)):
-    TempDict = {'Unique': submission.id, 'Sub': subredditName, 'Title': submission.title, 'URL': 'https://reddit.com'+submission.permalink, 'Time': str(
-        datetime.datetime.fromtimestamp(submission.created_utc)), 'Author': str(submission.author), 'Body': submission.selftext, 'IsSelfPost': submission.is_self}
+    TempDict = {
+        'Unique': submission.id,
+        'Sub': subredditName,
+        'Title': submission.title,
+        'URL': 'https://reddit.com'+submission.permalink,
+        'Time': str(datetime.datetime.fromtimestamp(submission.created_utc)),
+        'Author': str(submission.author),
+        'Body': submission.selftext,
+        'IsSelfPost': submission.is_self
+    }
+
     print(submission.is_self)
     dfPosts = dfPosts.append(
         TempDict, ignore_index=True)  # Append to dataframe
     print('Retrieved data for '+str(indexPosts+1)+' posts')
+
 print(dfPosts)
 
 # Get Sample Dataframe of author information
-dfHeadingsAuthor = {'userName': [], 'accountAge': [], 'commentKarma': [
-], 'linkKarma': [], 'isMod': [], 'numPosts': [], 'avgCommentsToPost': []}
+dfHeadingsAuthor = {
+    'userName': [],
+    'accountAge': [],
+    'commentKarma': [],
+    'linkKarma': [],
+    'isMod': [],
+    'numPosts': [],
+    'avgCommentsToPost': []
+}
+
 dfAuthors = pd.DataFrame(dfHeadingsAuthor)
 dfAuthors['isMod'] = dfAuthors['isMod'].astype('bool')
+
 for indexAuthor, thisIndex in enumerate(dfPosts.index):
     # Get Entry Information
     thisSubmission = reddit.submission(id=dfPosts.loc[thisIndex, 'Unique'])
@@ -52,8 +81,10 @@ for indexAuthor, thisIndex in enumerate(dfPosts.index):
         TempDictAuthor['commentKarma'] = thisAuthor.comment_karma
         TempDictAuthor['linkKarma'] = thisAuthor.link_karma
         TempDictAuthor['isMod'] = thisAuthor.is_mod
+
         numPosts = 0
         numCommentsList = []
+
         # Get number of posts by the author in the past month and the average number of comments to it
         for thisAuthorPost in thisAuthor.submissions.top(time_filter="month"):
             numPosts = numPosts + 1
@@ -65,9 +96,15 @@ for indexAuthor, thisIndex in enumerate(dfPosts.index):
                 else:
                     numComments = np.nan  # For simplicity, just made this NaN as the summation is unknown unless clicking "More Comments", which is not part of this example code
             numCommentsList.append(numComments)
+
         TempDictAuthor['numPosts'] = numPosts
         TempDictAuthor['avgCommentsToPost'] = np.mean(numCommentsList)
+
     dfAuthors = dfAuthors.append(
         TempDictAuthor, ignore_index=True)  # Append to dataframe
     print('Retrieved data for '+str(indexAuthor+1)+' authors')
 print(dfAuthors)
+
+# Tasks:
+# 1. Confirm retrieval of posts
+# 2. Come up with
