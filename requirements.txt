@@ -1,4 +1,5 @@
-prawn
+praw
 pandas
 numpy
+python-dotenv
 
