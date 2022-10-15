@@ -2,6 +2,7 @@
 # It is not implied that you need to collect these specific attributes of submissions or redditors, but are merely examples
 
 from RedditBrowser import RedditBrowser
+from Analyzer import Analyzer
 
 import praw
 import pandas as pd
@@ -27,5 +28,5 @@ SUBREDDIT = 'christianity'
 posts = browser.retrieve_posts(SUBREDDIT)
 # Get Sample Dataframe of author information
 authors = browser.retrieve_authors(posts)
-# scores = analyzer.score_authors()
-# labels = analyzer.label_scores()
+scores = Analyzer.score_authors()
+labels = Analyzer.interpret_scores()
