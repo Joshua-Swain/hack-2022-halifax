@@ -2,4 +2,3 @@ praw
 pandas
 numpy
 python-dotenv
-
