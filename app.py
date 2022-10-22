@@ -26,7 +26,10 @@ SUBREDDIT = 'christianity'
 
 # Get Sample Dataframe of top 5 Posts' information
 posts = browser.retrieve_posts(SUBREDDIT)
+
 # Get Sample Dataframe of author information
 authors = browser.retrieve_authors(posts)
-scores = Analyzer.score_authors()
-labels = Analyzer.interpret_scores()
+scores = Analyzer.score_authors(authors)
+labels = Analyzer.interpret_scores(scores)
+
+print(scores)

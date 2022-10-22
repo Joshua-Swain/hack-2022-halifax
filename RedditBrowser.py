@@ -26,6 +26,8 @@ class RedditBrowser:
         'avgCommentsToPost': []
     }
 
+    NUM_OF_POSTS = 1
+
     def __init__(self, reddit):
         self.reddit = reddit
 
@@ -33,7 +35,7 @@ class RedditBrowser:
         posts_df = pd.DataFrame(self.POST_COLUMNS)
         posts_df['IsSelfPost'] = posts_df['IsSelfPost'].astype('bool')
 
-        for i, post in enumerate(self.reddit.subreddit(subreddit).hot(limit=5)):
+        for i, post in enumerate(self.reddit.subreddit(subreddit).hot(limit=self.NUM_OF_POSTS)):
             post_data = {
                 'Unique': post.id,
                 'Sub': subreddit,
